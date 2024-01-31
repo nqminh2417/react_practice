@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import { Camera, useCameraDevice, useCameraDevices, useCameraPermission, useCodeScanner } from 'react-native-vision-camera'
 import { PermissionsAndroid, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';

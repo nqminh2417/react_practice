@@ -1,13 +1,8 @@
 module.exports = {
   root: true,
-  extends: [
-    '@react-native',
-    'eslint:recommended',
-    'plugin:prettier/recommended',
+  extends: '@react-native',
+  plugins: [
+    // ... other plugins
+    'prettier',
   ],
-  plugins: ['prettier'],
-  rules: {
-    // ... other ESLint rules
-    'prettier/prettier': 'error',
-  },
 };

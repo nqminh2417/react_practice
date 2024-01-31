@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import { Button, Text, View } from 'react-native';
 
 import React from 'react';
