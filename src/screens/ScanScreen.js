@@ -1,79 +1,90 @@
-import { Camera, useCameraDevice, useCameraDevices, useCameraPermission, useCodeScanner } from 'react-native-vision-camera'
-import { PermissionsAndroid, StyleSheet, Text, View } from 'react-native';
+import { Animated, Button, Image, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 
-const ScanScreen = ({ navigation }) => {
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-    const device = useCameraDevice('back');
-    const [hasPermission, setHasPermission] = useState(false);
-    const [barcodeValue, setBarcodeValue] = useState('');
+const HomeScreen = ({ navigation }) => {
 
-    useEffect(() => {
-        const checkPermission = async () => {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.CAMERA,
-                // ... permission request options
-            );
-            setHasPermission(granted === PermissionsAndroid.RESULTS.GRANTED);
-        };
-
-        checkPermission();
-    }, []);
-
-    const codeScanner = useCodeScanner({
-        codeTypes: ['qr', 'ean-13'],
-        onCodeScanned: (codes) => {
-            console.log(`Scanned: ${codes[0].value}`);
-            setBarcodeValue(codes[0].value);
-        }
-    });
+    const [isHovered1, setIsHovered1] = useState(false);
+    const [isHovered2, setIsHovered2] = useState(false);
 
     return (
-        hasPermission && (
-            <View style={{ flex: 1 }}>
-                <Camera
-                    style={{ flex: 1 }}
-                    device={device}
-                    isActive={true}
-                    codeScanner={codeScanner}
-                />
-                <Text style={{ textAlign: 'center', marginTop: 20 }}>
-                    {barcodeValue}
-                </Text>
-            </View>
-        )
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Pressable
+                onPress={() => navigation.navigate('Scan', {
+                    view: 1,	// Move Pallet
+                })}
+                onPressIn={() => setIsHovered1(true)}
+                onPressOut={() => setIsHovered1(false)}
+                style={[styles.btnMoveFT, isHovered1 && styles.btnMoveFThovered]}
+            >
+                <Text style={styles.btnText}>Move Pallet</Text>
+            </Pressable>
+
+            <View style={{ height: 50 }}></View>
+
+            <Pressable
+                onPress={() => navigation.navigate('Scan', {
+                    view: 2, 	// Inpection Inventory
+                })}
+                onPressIn={() => setIsHovered2(true)}
+                onPressOut={() => setIsHovered2(false)}
+                style={[styles.btnMoveOS, isHovered2 && styles.btnMoveOShovered]}
+            >
+                <Text style={styles.btnText}>Inpection Inventory</Text>
+            </Pressable>
+
+            <View style={{ height: 50 }}></View>
+
+            <Pressable style={[styles.btnTest]} onPress={() => navigation.navigate('Test')}>
+                <Text style={styles.btnText}>Go to Test Screen</Text>
+            </Pressable>
+        </View>
     );
-    //-----------------
-
-    // const { hasPermission, requestPermission } = useCameraPermission();
-    // const device = useCameraDevice('back');
-    // console.log(hasPermission);
-
-    // const codeScanner = useCodeScanner({
-    //     codeTypes: ['qr', 'ean-13'],
-    //     onCodeScanned: (codes) => {
-    //         console.log(`Scanned: ${codes[0].value}`)
-    //     }
-    // });
-
-    // React.useEffect(() => {
-    //     requestPermission();
-    // }, []);
-    // if (device == null) {
-    //     return (
-    //         <View>
-    //             <Text>Device not found</Text>
-    //         </View>
-    //     );
-    // }
-    // return (
-    //     <Camera
-    //         style={StyleSheet.absoluteFill}
-    //         device={device}
-    //         isActive={true}
-    //         codeScanner={codeScanner}
-    //     />
-    // );
 };
 
-export default ScanScreen;
+const styles = StyleSheet.create({
+
+    btnMoveFT: {
+        backgroundColor: '#006666',
+        width: '80%',
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20,
+        borderRadius: 10,
+        // ... other styles
+    },
+    btnMoveFThovered: {
+        backgroundColor: '#008080', // Adjust for hover effect
+        // ... other hover styles
+    },
+    btnMoveOS: {
+        backgroundColor: '#40e0d0',
+        width: '80%',
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20,
+        borderRadius: 10,
+        // ... other styles
+    },
+    btnMoveOShovered: {
+        backgroundColor: '#3bd6c6', // Adjust for hover effect
+        // ... other hover styles
+    },
+    btnText: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: 'white',
+    },
+    btnTest: {
+        width: '80%',
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'green',
+        borderRadius: 10,
+    },
+});
+export default HomeScreen;
